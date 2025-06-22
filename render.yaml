@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: gestor-tareas
+    env: python
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "gunicorn gestor_tareas.wsgi"
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: gestor_tareas.settings
+      - key: PYTHON_VERSION
+        value: 3.10
+      - key: SECRET_KEY
+        generateValue: true

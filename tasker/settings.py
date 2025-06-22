@@ -14,6 +14,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os.path
+import dj_database_url
 
 import locale
 locale.setlocale(locale.LC_TIME, '')
@@ -28,12 +29,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-u+4(n+@or3pn-1f5_f&%k_6m&hb9!*-2t93^m_hvhf!ks9(4lt'
+SECRET_KEY = os.environ.get('SECRET_KEY', 'clave-insegura-por-defecto')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -88,14 +89,7 @@ WSGI_APPLICATION = 'tasker.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'tasker_bd',
-        'USER': 'root',
-        'PASSWORD': 'revolucion1959',
-        'HOST': 'localhost',
-        'PORT': '3306',
-    }
+        'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))
 
 }
 
@@ -146,6 +140,8 @@ STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
+
+
 MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'media')
 LOGIN_REDIRECT_URL = '/dashboard/' 
 LOGIN_URL =  'login'
@@ -174,3 +170,7 @@ LOGGING = {
         },
     },
 }
+
+import os
+if os.getenv('RENDER'):
+    DEBUG = False
