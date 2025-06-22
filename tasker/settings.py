@@ -18,8 +18,8 @@ import dj_database_url
 
 import locale
 locale.setlocale(locale.LC_TIME, '')
-import pymysql
-pymysql.install_as_MySQLdb()
+#import pymysql
+#pymysql.install_as_MySQLdb()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
