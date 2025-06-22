@@ -1,0 +1,27 @@
+{% extends 'bases/dashboard_new.html'%}
+{%load static %}
+    {% block form %}
+
+
+<h2>Añadir usuario a : {{ group.name }}</h2>
+<form  action =" " method ="POST" enctype="multipart/form-data" class= " col-lg-12">
+
+    {% csrf_token %}
+
+    {{ form.as_p }}
+
+
+    <button type="button"  class="btn btn-dark btn-flat" >
+        <a href="{% url 'all_teams' %}" >
+         <i class="fas fa fa-undo"></i>
+          Cancelar
+        </a>
+      </button>
+
+      <button type="submit"  class="btn btn-primary btn-flat">
+        <i class="fas fa fa-save"></i>
+          Añadir
+      </button>
+  </form>
+
+  {%endblock%}

@@ -1,0 +1,87 @@
+{% extends 'bases/dashboard_tables.html'%}
+{%load static %}
+{{ page_title }}
+
+{% block limpiar %}
+<button type="button"  class="btn btn-light " style="border_left:1px solid blue;" ><a href="{% url 'all_users' %}" ><i class="fas fa fa-undo"></i>
+Limpiar</a></button>
+{% block mensaje %} {% endblock%}
+{%endblock%}
+
+    {% block columns%} 
+    
+    <th>Nick</th>
+    <th>Nombre y apellidos </th>
+    <th>Rol </th>
+    <th>Email </th> 
+    <th>Directivo </th>
+    <th>Activo </th>
+    <th>Teléfono</th>
+   
+    <th>Ver</th>   
+    <th>Cambiar</th> 
+    <th>Borrar</th> 
+    
+     
+    {% endblock%}
+                        
+    {%block rows%}                    
+                  {%for a in object_list %}
+   
+
+      <tr>              
+        <td>{{a.username|default:''}} </td>
+        <td>{{a.name|default:''}} {{ a.first_name|default:''}} {{ a.last_name|default:''}}  </td>
+        <td>{{a.rol|default:''}}</td>
+        <td>{{a.email|default:''}}</td>
+        <td> {% if a.is_staff%}
+          Si
+          {% else%}
+          No
+          {%endif%}
+        </td>
+        <td>
+          {% if a.is_active%}
+          Si
+          {% else%}
+          No
+          {%endif%}
+          </td>        
+        <td>{{a.phone|default:''}}</td>
+      
+
+      
+
+      <td>
+        <a href="{% url 'user_detail' a.id %}">
+            <i class="fa fa-eye" style="color:blue;"></i>
+            
+          </button>
+        </a>
+      </td> 
+       
+
+      <td>
+        <a href="{% url 'user_update' a.id %}">
+            <i class="fas fa-edit" aria-hidden="true" style="color:#000;"></i> 
+            
+          </button>
+        </a>
+      </td>  
+       <td>
+        <a href="{% url 'user_delete' a.id %}">
+            <i class="fa fa-trash"aria-hidden="true" style="color:green;"></i>
+            
+          </button>
+        </a>
+      </td>  
+             
+    </tr>
+                  {% endfor%}
+    {% endblock%}
+
+    {% block to_new%}
+       <a href=" {% url 'user_create' %}">
+    {% endblock %}
+
+

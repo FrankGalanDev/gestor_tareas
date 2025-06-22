@@ -1,0 +1,100 @@
+
+{% extends 'bases/dashboard_tables.html' %}
+
+
+{%load static %}
+{{ page_title }}
+
+{% block limpiar %}
+<button type="button"  class="btn btn-warning" style="border_left:1px solid blue;" ><a href="{% url 'all_meetings' %}" ><i class="fas fa fa-undo"></i>
+Limpiar</a></button>
+{% block mensaje %} {% endblock%}
+{%endblock%}
+
+    {% block columns%}
+
+    <th>Nombre </th>
+    <th>Fecha </th>
+    <th>Descripcion </th>
+    <th>Objetivos </th>
+    <th>Participantes</th>
+    <th>Inicio </th>
+    <th>Terminó </th>
+    
+    
+   
+    <th>Ver</th>   
+    <th>Cambiar</th> 
+    <th>Borrar</th> 
+    
+     
+    {% endblock%}
+                        
+    {%block rows%}                    
+                  {%for a in object_list %}
+    <tr>              
+      <td> 
+         <span data-toggle="tooltip" data-placement="top" title="Nombre de la reunión: {{a.nombre|default:''}}">        
+          <i class="fa fa-eye" style="color:blue;"></i>
+        {{a.nombre|truncatewords:4|default:''}} 
+         </span>
+      </td>
+    
+      <td>{{a.fecha|default:''}} </td>
+      <td>
+         <span data-toggle="tooltip" data-placement="top" title="Descripcion: {{a.description|default:''}}">        
+          <i class="fa fa-eye" style="color:blue;"></i>
+        {{a.description|truncatewords:15|default:''}} 
+         </span>
+
+      </td>
+      <td>
+         <span data-toggle="tooltip" data-placement="top" title="Objetivos: {{a.objectives|default:''}}">        
+          <i class="fa fa-eye" style="color:blue;"></i>
+        {{a.objectives|truncatewords:8|default:''}}
+         </span>
+       </td>
+      <td>
+         <span data-toggle="tooltip" data-placement="top" title="Descripcion: {{a.members|default:''}}">        
+          <i class="fa fa-eye" style="color:blue;"></i>
+        {{a.members|truncatewords:10|default:''}} 
+         </span>
+      </td>
+      <td>{{a.start_time|default:''}} </td>
+      <td>{{a.end_time|default:''}} </td>
+      
+
+      <td>
+        <a href="{% url 'meeting_detail' a.id %}">
+             <i class="fa fa-eye" style="color:blue;"></i>
+            
+          </button>
+        </a>
+      </td> 
+       
+
+      <td>
+        <a href="{% url 'meeting_update' a.id %}">
+             <i class="fas fa-edit" aria-hidden="true" style="color:#000;"></i>  
+            
+          </button>
+        </a>
+      </td>  
+       <td>
+        <a href="{% url 'meeting_delete' a.id %}">
+             <i class="fa fa-trash"aria-hidden="true" style="color:red;"></i>
+            
+          </button>
+        </a>
+      </td>  
+             
+    </tr>
+                  {% endfor%}
+    {% endblock%}
+
+    {% block to_new%}
+       <a href=" {% url 'meeting_create' %}">
+    {% endblock %}
+
+
+

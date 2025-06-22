@@ -1,0 +1,61 @@
+{% extends 'layouts/only_view.html'%}
+{%load static %}
+
+
+
+{% block detail %}
+<div class="row justify-content-between ml-10px" style="background-color:#dde2e2;"> 
+  <div class="row"> 
+                  
+    <h2 style="color:#000; padding:0.5em; margin-left:15%;font-size:1.5em; height:2em;" >
+      {{object.full_name|default:''}} {{object.last_name|default:''}} {{object.last_name|default:''}}
+
+    </h2>
+  </div>
+
+  <div style="background-color:#dde2e2;">    
+    
+    <div  style="border: 3px solid #fff;">
+      <p style=" font-weight:bold; color:gray;">NOMBRE DEL GASTO O COSTO</p>
+     <p style="color:#000;font-size:1.2em;"> {{object.denomination|default:'Este dato no se ha añadido'}}</p>
+    </div>
+    
+    <div  style="border: 3px solid #fff;">
+      <p style=" font-weight:bold; color:gray;">DESCRIPCION</p>
+      <p style="color:#000;font-size:1.2em;"> {{object.cost_description |default:'Este dato no se ha añadido'}}</p>
+    </div>
+    
+     
+    
+
+
+
+  </div>
+
+  
+   
+  
+</div>    
+
+<div class="row"> 
+  <div class="card-footer col-2"> 
+    <button type="button"  class="btn btn-dark btn-flat" >
+      <a href="{% url 'all_costs' %}" >
+        <i class="fas fa fa-sign-out" style="color:white;"></i>
+        Volver
+      </a>
+    </button>
+  </div>
+  <div class="card-footer col-2"> 
+    <button type="button"  class="btn btn-warning btn-flat" >
+      <a href="{% url 'update_cost' object.id %}">
+        <i class="fa fa-pencil" aria-hidden="true" style="color:#fff;"></i> 
+        Editar
+      </a>
+    </button>    
+  </div>
+</div>
+                    
+                        
+
+  {% endblock %}

@@ -1,0 +1,66 @@
+{% extends 'bases/dashboard_tables.html'%}
+{%load static %}
+{{ page_title }}
+
+{% block limpiar %}
+<button type="button"  class="btn btn-warning" style="border_left:1px solid blue;" ><a href="{% url 'all_chats' %}" ><i class="fas fa fa-undo"></i>
+Limpiar</a></button>
+{%endblock%}
+
+    {% block columns%}
+
+    <th style="width:15%;">Tema</th> 
+    <th>Envia</th> 
+    <th>Para</th> 
+    <th>Mensaje</th>
+    <th style="width:10%;">Fecha</th>
+    <th>Ver</th> 
+    <th>Responder</th> 
+    <th>Hilo</th>  
+
+    
+    {% endblock%}
+                        
+    {%block rows%}                    
+                  {%for a in object_list %}
+    <tr>   
+      <td>{{a.message_topic}}</td>
+      <td>{{a.sender}}</td>
+      <td>{{a.receiver}}</td>
+      <td>{{a.message_text}}</td>
+      <td>{{a.message_date }}</td>          
+      
+      <td>
+        <a href="{% url 'see_message' a.id %}">
+          <button  class="bt_detail botones" type="submit" style="border-radius: 20px; box-shadow:3px 3px rgba(0,0,0,0.5);" >
+            <i class="fa fa-eye" style="color:green;"></i>
+            
+          </button>
+        </a>
+      </td>
+      <td>
+        <a href="{% url 'response_message' a.id %}">
+          <button  class="bt_response" type="submit" style="border-radius: 20px; box-shadow:3px 3px rgba(0,0,0,0.5);">
+            <i class="fa fa-reply" aria-hidden="true"></i>
+            
+          </button>
+        </a>
+      </td>  
+       <td>
+        <a href="{% url 'message_thread' a.id %}">
+          <button class="bt_delete" type="submit" style ="color:red;border-radius: 20px; box-shadow:3px 3px rgba(0,0,0,0.5);";>
+            <i class="fa fa-comments-o" aria-hidden="true"></i>
+            
+          </button>
+        </a>
+      </td>  
+             
+    </tr>
+                  {% endfor%}
+    {% endblock%}
+
+    {% block to_new%}
+       <a href=" {% url 'new_chat' %}">
+    {% endblock %}
+ 
+

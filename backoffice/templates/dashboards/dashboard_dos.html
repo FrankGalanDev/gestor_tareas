@@ -1,0 +1,56 @@
+{% extends 'bases/base.html' %}
+{%load static%}
+{% block content %}
+
+<div class="row">
+    <div class="col-md-6">
+      <div class="card mb-3">
+        <div class="card-header">
+          <h5>Tareas</h5>
+        </div>
+        <div class="card-body">
+          <canvas id="progreso-tareas"></canvas>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card mb-3">
+        <div class="card-header">
+          <h5>Reuniones</h5>
+        </div>
+        <div class="card-body">
+          <canvas id="resultado-reuniones"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card mb-3">
+        <div class="card-header">
+          <h5>Tareas completadas</h5>
+        </div>
+        <div class="card-body">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>Tarea</th>
+                <th>Fecha de creación</th>
+                <th>Fecha de finalización</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for tarea in tareas_completadas %}
+              <tr>
+                <td>{{ tarea.nombre }}</td>
+                <td>{{ tarea.proyecto }}</td>
+       
+                <td>{{ tarea.fecha_vencimiento }}</td>
+               </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+
+
+
+{% endblock %}

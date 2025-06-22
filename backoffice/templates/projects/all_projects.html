@@ -1,0 +1,77 @@
+{% extends 'bases/dashboard_tables.html'%}
+{%load static %}
+{{ page_title }}
+
+{% block limpiar %}
+<button type="button"  class="btn btn-warning" style="border_left:1px solid blue;" ><a href="{% url 'all_projects' %}" ><i class="fas fa fa-undo"></i>
+Limpiar</a></button>
+{% block mensaje %} {% endblock%}
+{%endblock%}
+
+    {% block columns%}
+    
+    <th>Nombre</th>
+    <th>Descripcion </th>
+   
+    <th>Ver</th>   
+    <th>Cambiar</th> 
+    <th>Borrar</th> 
+    
+     
+    {% endblock%}
+                        
+    {%block rows%}                    
+                  {%for a in object_list %}
+    <tr>              
+      <td> 
+        <span data-toggle="tooltip" data-placement="top" title="Nombre Completo: {{a.project_name|truncatewords:5|default:''}}">        
+          <i class="fas fa-question-circle" style="color:orange"></i>
+        {{a.project_name|truncatewords:5|default:''}} </span>
+      </td>
+        
+    
+      <td>
+        <span data-toggle="tooltip" data-placement="top" title="Descripcion: {{a.project_description}}">        
+          <i class="fas fa-question-circle" style="color:orange"></i>
+          {{a.project_description|truncatewords:8|default:''}}
+        </span>
+        </td>
+      
+
+      
+
+      
+
+      <td>
+        <a href="{% url 'project_detail' a.id %}">
+             <i class="fa fa-eye" style="color:blue;"></i>
+            
+          </button>
+        </a>
+      </td> 
+       
+
+      <td>
+        <a href="{% url 'project_update' a.id %}">
+             <i class="fas fa-edit" aria-hidden="true" style="color:#000;"></i> 
+            
+          </button>
+        </a>
+      </td>  
+       <td>
+        <a href="{% url 'project_delete' a.id %}">
+             <i class="fa fa-trash"aria-hidden="true" style="color:red;"></i>
+            
+          </button>
+        </a>
+      </td>  
+             
+    </tr>
+                  {% endfor%}
+    {% endblock%}
+
+    {% block to_new%}
+       <a href=" {% url 'project_create' %}">
+    {% endblock %}
+
+

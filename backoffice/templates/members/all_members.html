@@ -1,0 +1,89 @@
+{% extends 'bases/dashboard_tables.html'%}
+{%load static %}
+{{ page_title }}
+
+{% block limpiar %}
+<button type="button"  class="btn btn-warnings" style="border_left:1px solid blue;" ><a href="{% url 'all_teams' %}" ><i class="fas fa fa-undo"></i>
+Limpiar</a></button>
+{% block mensaje %} {% endblock%}
+{%endblock%}
+
+    {% block columns%}
+    
+    <th>Nombre</th>
+   
+   
+    <th>Ver</th>   
+    <th>Cambiar</th> 
+    <th>Incluir</th> 
+    <th>Excluir</th> 
+
+    <th>Borrar</th> 
+
+    
+     
+    {% endblock%}
+                        
+    {%block rows%}                    
+                  {%for a in object_list %}
+    <tr>              
+      <td> {{a.name|truncatewords:6|default:''}} </td>
+    
+      
+      
+
+      
+
+      
+
+      <td>
+        <a href="{% url 'team_detail' a.id %}">
+             <i class="fa fa-eye" style="color:blue;"></i>
+            
+          </button>
+        </a>
+      </td> 
+       
+
+      <td>
+        <a href="{% url 'team_update' a.id %}">
+             <i class="fas fa-edit" aria-hidden="true" style="color:#000;"></i> 
+            
+          </button>
+        </a>
+      </td>  
+       
+      <td>
+        <a href="{% url 'add_user' a.id %}">
+             
+             <i class="fas fa-user-plus" aria-hidden="true" style="color:orange;"></i>
+            
+          </button>
+        </a>
+      </td>
+
+      <td>
+        <a href="{% url 'remove_users_from_group' a.id %}">
+             
+             <i class="fas fa-user-minus" aria-hidden="true" style="color:purple;"></i>  
+          </button>
+        </a>
+      </td>
+      
+      <td>
+        <a href="{% url 'team_delete' a.id %}">
+             <i class="fa fa-trash"aria-hidden="true" style="color:red;"></i>
+            
+          </button>
+        </a>
+      </td>  
+             
+    </tr>
+                  {% endfor%}
+    {% endblock%}
+
+    {% block to_new%}
+       <a href=" {% url 'team_create' %}">
+    {% endblock %}
+
+

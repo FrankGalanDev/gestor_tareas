@@ -1,0 +1,92 @@
+{% extends 'bases/dashboard_tables.html' %}
+{%load static %}
+
+{% block limpiar %}
+<button type="button"  class="btn btn-warning" style="border_left:1px solid blue;" ><a href="{% url 'all_tasks' %}" ><i class="fas fa fa-undo"></i>
+Limpiar</a></button>
+{%endblock%}
+
+    {% block columns%}
+
+    <th>Tarea</th> 
+    <th>Responsable</th> 
+    <th>A cumplir</th> 
+    <th>Columna</th> 
+    <th>Faltan(días)</th> 
+    <th>Descripción</th>
+    <th>Estado</th>
+    <th>Ver</th> 
+    <th>Cambiar</th> 
+    <th>Borrar</th> 
+
+    
+    {% endblock%}
+                        
+    {%block rows%}                     
+                  {%for a in object_list %}
+    <tr>              
+      <td>{{ a.task_name}}</td>
+      <td>{{ a.owner_name}}</td>
+      <td>{{ a.compliance_date}}</td>
+      <td>{{ a.column}}</td>
+      <td>
+        {% if a.get_time_diff < 0 %}
+          <span style="color:red; background-color:black; width:50px; border-radius:200px !important;">
+            {{ a.get_time_diff}}
+          </span>
+        {% else %}
+          <span style="color:black;">
+            {{ a.get_time_diff}}
+          </span>
+        {% endif %}
+
+      </td>
+      <td>    
+        <span data-toggle="tooltip" data-placement="top" title="Descripción: {{a.task_description}}" >
+          <i class="fa fa-eye" style="color:red;"></i>{{ a.task_description|truncatewords:'8'}}
+        </span> 
+        
+      </td> 
+      <td>
+        {%if a.on %}
+          <span style= "color:red;">Activa</span>        
+        {%else %}
+          <span style= "color:#000;">Inactiva</span>
+        {% endif %}
+
+      </td> 
+      
+
+      <td>
+        <a href="{% url 'task_detail' a.id %}">
+             <i class="fa fa-eye" style="color:blue;"></i>
+            
+          </button>
+        </a>
+      </td> 
+
+      <td>
+        <a href="{% url 'task_update' a.id %}">
+             <i class="fas fa-edit" aria-hidden="true" style="color:#000;"></i> 
+            
+          </button>
+        </a>
+      </td>  
+       <td>
+        <a href="{% url 'task_delete' a.id %}">
+            <i class="fa fa-trash"aria-hidden="true" style="color:red;"></i>
+            
+          </button>
+        </a>
+      </td>  
+             
+    </tr>
+                  {% endfor%}
+    {% endblock%}
+
+    {% block to_new%}
+       <a href=" {% url 'task_create' %}">
+    {% endblock %}
+
+
+

@@ -1,0 +1,58 @@
+{% extends 'layouts/new.html'%}
+
+
+
+    {% block form %}
+    <div>
+        <div>
+          <div class="row">
+            <h2 style="color:gray;"> Mensaje original: </h2>
+            <h2 style="color:red;">{{anterior.message_topic }}</h2>
+          </div>
+            
+            
+            <div>
+              <h4 style="font-weight:bold; color:gray"> Para:</h4>
+              <h5 style="color:red;"> {{anterior.receiver}} </h5>
+            </div>
+            <div>
+              <h4 style="font-weight:bold; color:gray"> Mensaje:</h4>
+              <h5 style="color:red;"> {{anterior.message_text}} </h5>
+            </div>
+            <div>
+              <h4 style="font-weight:bold; color:gray"> Fecha:</h4> 
+              <h5 style="color:red;"> {{anterior.message_date}}  </h5>
+            </div> 
+            <div>
+              <h4 style="font-weight:bold; color:gray"> Fecha:</h4> 
+              <h5 style="color:red;"> {{anterior.status }} </h5>
+            </div>
+            
+        </div>
+
+    </div>      
+      <form  action =" " method ="POST" enctype="multipart/form-data" class= " col-lg-12">
+
+        {% csrf_token %}
+        
+       
+        {{ form.as_p}}
+         
+      
+          <div class="card-footer" style="background-color:#e5e5e5">       
+            
+            <button type="button"  class="btn btn-dark btn-flat" >
+              <a href="{% url 'all_chats' %}" >
+               <i class="fas fa fa-undo"></i>
+                Cancelar
+              </a>
+            </button>
+
+             <button type="submit"  class="btn btn-primary btn-flat">
+              <i class="fas fa fa-save"></i>
+                Guardar
+            </button>
+          </div>             
+                          
+ 
+    {% endblock %}

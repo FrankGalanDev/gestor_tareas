@@ -1,0 +1,97 @@
+{% extends 'bases/base.html'%}
+
+{% block content%}
+
+      <!-- Breadcrumb-->
+      <div class="breadcrumb-holder">
+        <div class="container-fluid">
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a href=" {% url 'dashboard' %}">Inicio</a></li>
+            <li class="breadcrumb-item active">{{page_title|default:_('Page Title')}}</li>
+          </ul>
+        </div>
+      </div>
+<section>
+  <div class="container-fluid">
+    <!-- Page Header-->
+    <header> 
+      <h1 class="h3 display">  {{table_title |default:_('Table Title') }}</h1>
+    </header>
+          <div class="row">
+            
+            <div class="col-lg-12">
+              <div class="card">
+                <div class="card-header">
+                  <h4>{{table_subtitle |default:_('Subtitle ') }} </h4>
+                </div>
+                <div class="card-body">
+                  <div class="table-responsive">
+  
+
+                    {% block view%} 
+
+                    
+                    {% endblock%}
+
+      {% block pagination%}  
+        <div class="pagination">
+          <span class="step-links">
+          
+          {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}">anterior</a>
+          {% endif %}
+
+          <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+          </span>
+
+          {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">próximo</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">último &raquo;</a>
+          {% endif %}
+          
+          </span>
+       </div>              
+      {% endblock %} 
+
+                    <div class="card-footer" style="display:flex;">
+                      <div class="col-md-2">
+                       {% block to_new%} 
+                       <a href=" {% url 'dashboard' %}"> {% endblock%}
+                         <button type="submit"  class="btn btn-primary btn-flat mx-3">
+                          <i class="fas fa fa-save"></i>
+                            Añadir nuevo
+                        </button>
+                      </a>
+                    </div>
+                        {% block button_one %}
+                          <div class="col-md-2">
+                            
+                          </div>
+                        {% endblock %}
+                        {% block button_two %}
+                          <div class="col-md-2">
+                            
+                          </div>
+                        {% endblock %}
+                        {% block button_three %}
+                        <div class="col-md-2">
+                          
+                        </div>
+                        {% endblock %}
+                      </a>
+                    </div> 
+
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6">
+
+          </div>
+        </div>
+</section>
+      
+      
+{% endblock %}

@@ -1,0 +1,62 @@
+{% extends 'base/base.html' %}
+{%load static %}
+{{ page_title }} 
+
+{%block content%}
+<div style="background-color:#dde2e2; padding:5px;">
+    <h2> AYUDA </h2>
+</div>
+
+{% block busqueda %}
+<section>
+  <div >
+    <form class="form-inline my-2 my-lg-0 ml-5" method ="GET">
+      {% csrf_token %}
+      <input class="form-control mr-sm-2" type="text" placeholder="Buscar" name="busqueda" style="width:80%;">
+      <span class="search-icon">
+          <i class="fa fa-search" aria-hidden="true"></i>
+          <button class="button btn-dark-overlay-lighter" type="submit">Buscar</button>
+          {% block limpiar %}
+          {% endblock %}
+         
+      </span>
+    </form>
+  </div>
+     
+
+</section>
+{% endblock%}
+
+{% for h in object_list%}
+    <div style="background-color:#dde2e2; padding:5px;">
+        <section name='{{h.title}}' id='{{h.title}}' style="margin-top:25px;">
+            <h2 style=font-weight:bold>{{ h.title|default:''}}</h2> 
+            <h3 style=font-weight:bold>{{ h.subtitle|default:''}}</h3> 
+            <p>{{ h.description|default:''}}  </p>
+
+        </section>
+        
+    </div>
+{% endfor %}
+
+    {% block pagination%}  
+        <div class="pagination">
+            <span class="step-links">                                        
+                {% if page_obj.has_previous %}
+                    <a href="?page=1">&laquo; primera</a>
+                    <a href="?page={{ page_obj.previous_page_number }}">anterior</a>
+                {% endif %}
+                <span class="current">
+                    Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.
+                </span>
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}">próximo</a>
+                    <a href="?page={{ page_obj.paginator.num_pages }}">último &raquo;</a>
+                {% endif %}                                        
+            </span>
+        </div>              
+    {% endblock %} 
+
+{% endblock %}
+
+

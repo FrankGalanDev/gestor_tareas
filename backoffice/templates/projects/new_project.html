@@ -1,0 +1,25 @@
+{% extends 'bases/dashboard_new.html'%}
+
+    {% block form %}
+                  
+      <form  action =" " method ="POST" enctype="multipart/form-data" class= " col-lg-12">
+
+        {% csrf_token %}
+         {{ form.as_p}}
+          <div class="card-footer" style="background-color:#e5e5e5;">       
+            
+            <button type="button"  class="btn btn-dark btn-flat" >
+              <a href="{% url 'all_projects' %}" >
+               <i class="fas fa fa-undo"></i>
+                Cancelar
+              </a>
+            </button>
+
+             <button type="submit"  class="btn btn-primary btn-flat">
+              <i class="fas fa fa-save"></i>
+                Guardar
+            </button>
+          </div>             
+                          
+ 
+    {% endblock %}

@@ -1,0 +1,45 @@
+{% extends 'bases/dashboard_new.html'%}
+
+    {% block form %}
+                  
+      <form  action =" " method ="POST" enctype="multipart/form-data" class= " col-lg-12">
+
+        {% csrf_token %}
+         
+
+
+    <label for="team_name">Nombre:</label>
+    <input type="text" name="team_name" id="team_name">
+
+    <h2>Miembros:</h2>
+
+    {{form}}
+
+    {{ memberships.management_form }}
+
+
+
+    <input type="hidden" name="{{ memberships.management_form.prefix }}-TOTAL_FORMS" value="{{ memberships.total_form_count }}">
+    <input type="hidden" name="{{ memberships.management_form.prefix }}-INITIAL_FORMS" value="{{ memberships.initial_form_count }}">
+
+   
+ 
+
+
+          <div class="card-footer" style="background-color:#e5e5e5;">       
+            
+            <button type="button"  class="btn btn-dark btn-flat" >
+              <a href="{% url 'all_teams' %}" >
+               <i class="fas fa fa-undo"></i>
+                Cancelar
+              </a>
+            </button>
+
+             <button type="submit"  class="btn btn-primary btn-flat">
+              <i class="fas fa fa-save"></i>
+                Guardar
+            </button>
+          </div>             
+   </form>                        
+ 
+    {% endblock %} 

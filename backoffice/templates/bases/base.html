@@ -1,0 +1,1010 @@
+
+{% load i18n static %}
+
+<!DOCTYPE html>
+{% get_current_language as LANGUAGE_CODE %}{% get_current_language_bidi as LANGUAGE_BIDI %}
+<html lang="{{ LANGUAGE_CODE|default:"en-us" }}" {% if LANGUAGE_BIDI %} dir="rtl"{% endif %}>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    {% block title %}<title> | {{ site_title|default:_('Tasker') }}</title> {%endblock%} <!--  Endblock tittle-->
+
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="all,follow">
+
+    
+    <link rel="stylesheet" href="{% static 'jquery-ui-1.12.1/jquery-ui.min.css' %}">
+
+    <!-- Bootstrap CSS-->
+    <link rel="stylesheet" href={% static "vendor/bootstrap/css/bootstrap.min.css" %}>
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+
+    <!-- Font Awesome CSS-->
+    <link rel="stylesheet" href={% static "vendor/font-awesome-4.7.0/css/font-awesome.min.css"%}>
+    <!-- Fontastic Custom icon font-->
+    <link rel="stylesheet" href={% static "css/fontastic.css" %}>
+    <!-- Google fonts - Roboto -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700">
+    <!-- jQuery Circle-->
+    <link rel="stylesheet" href={% static "css/grasp_mobile_progress_circle-1.0.0.min.css" %}>
+    <!-- Custom Scrollbar-->
+    <link rel="stylesheet" href={% static "vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.css" %}>
+    <!-- theme stylesheet-->
+    <link rel="stylesheet" href={% static "css/backoffice.css" %} id="theme-stylesheet">
+    <!-- Custom stylesheet - for your changes-->
+    <link rel="stylesheet" href={% static "css/pictures.css" %}>
+
+ 
+    <!--BLOCK  Extra CSS-->
+    {% block extra_css%}
+    {% endblock%}
+
+    <!-- Favicon-->
+    <link rel="shortcut icon" href={% static "img/favicon.ico" %}>
+    <!-- Tweaks for older IEs--><!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
+  </head>
+  <body>
+  
+  <!-- BLOCK LATERAL MENU -->
+  {% block side_nav_bar %}   
+    <!-- Side Navbar -->
+    <nav class="side-navbar">
+      <div class="side-navbar-wrapper">
+        <!-- Sidebar Header    -->
+        <div class="sidenav-header d-flex align-items-center justify-content-center">
+          <!-- User Info-->
+          
+          <div class="sidenav-header-inner text-center">
+            {% if not user.request.photo %}
+            <img  src= {% static "img/avatars/avatar.png" %} alt="" class="img-fluid rounded-circle">
+             {% else %}
+             <img  src= "{{usuario.photo.url}}" alt="{{usuario.username|default:_('Ramon Perez') }}" class="img-fluid rounded-circle">
+            {% endif %}
+
+            <h2 class="h5"> 
+              
+              {% block name_of_user %} {{ user.username|default:_('Ramon Perez') }}{%endblock%}
+              
+            </h2>
+              <span>
+                {% block rol_of_user %} {{ user.rol|default:_('Administrador') }}{%endblock%}
+              </span>
+           
+            
+              
+          </div>
+           <!--  Endblock tittle-->
+          <!-- Small Brand information, appears on minimized sidebar-->
+          <div class="sidenav-header-logo"><a href="{% url 'dashboard' %}"></a></div>
+        </div>
+        <!-- Sidebar Navigation Menus-->
+        <div class="main-menu">
+          <h5 class="sidenav-heading" style="color:#000;">Area Personal</h5>
+          <ul id="side-main-menu" class="side-menu list-unstyled">                  
+            <li><a href={% url "dashboard" %}> <i class="icon-home"></i>INICIO </a></li>
+
+         
+          
+           <!-- KANBAN DASHBOARD -->
+           <li><a href= "#kanbanresult_Dropdown" aria-expanded="false" data-toggle="collapse"><i class="fas fa-handshake" aria-hidden="true"></i>  TABLEROS</a>
+            <ul id="kanbanresult_Dropdown" class="collapse list-unstyled ">
+              <li><a href={% url "kanban_board" %}>Kanban</a></li>                
+            </ul>
+          </li>
+        
+          <!-- CRUD TASK MENU -->  
+          <li><a href= "#task_Dropdown" aria-expanded="false" data-toggle="collapse"><i class="icon-list" aria-hidden="true"></i>TAREAS</a>
+            <ul id="task_Dropdown" class="collapse list-unstyled ">
+              <li><a href={% url "all_tasks" %}>Todas</a></li>
+              <li><a href={% url "task_create" %}>Nueva</a></li> 
+              <li><a href={% url "task_stats" %}>Estadistica</a></li> 
+              <li><a href={% url "task_statistics_data" %}>Tareas/Status</a></li> 
+              <li><a href={% url "task_statistics" %}>Duración/Tareas</a></li> 
+              <li><a href={% url "task_status_scatter" %}>Puntos</a></li> 
+              <li><a href={% url "task_status_line" %}>Lineas</a></li> 
+
+            </ul>
+          </li>  
+
+          <!-- CRUD TEAM MENU -->
+          <li><a href= "#teams_Dropdown" aria-expanded="false" data-toggle="collapse"><i class="fas fa-users-cog"></i>  EQUIPOS</a>
+            <ul id="teams_Dropdown" class="collapse list-unstyled ">
+              <li><a href={% url "all_teams" %}>Todos</a></li>
+              <li><a href={% url "team_create" %}>Nuevo</a></li>
+            
+
+              
+            </ul>
+          </li>
+
+          <!-- CRUD PROJECT MENU -->
+          <li><a href= "#projects_Dropdown" aria-expanded="false" data-toggle="collapse"><i class="fas fa-project-diagram"></i> PROYECTOS</a>
+            <ul id="projects_Dropdown" class="collapse list-unstyled ">
+              <li><a href={% url "all_projects" %}>Todos</a></li>
+              <li><a href={% url "project_create" %}>Nuevo</a></li>
+              
+            </ul>
+          </li>
+        
+          
+           <!-- CRUD MEETING MENU -->
+          <li><a href= "#meeting_Dropdown" aria-expanded="false" data-toggle="collapse"><i class="fas fa-people-arrows"></i> REUNIONES</a>
+            <ul id="meeting_Dropdown" class="collapse list-unstyled ">
+              <li><a href={% url "all_meetings" %}>Todas</a></li>
+              <li><a href={% url "meeting_create" %}>Nueva</a></li>
+              
+            </ul>
+          </li>
+         
+
+           <!-- CRUD MEETING RESULT MENU -->
+           <li><a href= "#meetingresult_Dropdown" aria-expanded="false" data-toggle="collapse"><i class="fas fa-handshake" aria-hidden="true"></i>  REUNIONES/TAREAS</a>
+            <ul id="meetingresult_Dropdown" class="collapse list-unstyled ">
+              <li><a href={% url "all_meetingresults" %}>Todos</a></li>
+              <li><a href={% url "meetingresult_create" %}>Crear</a></li>    
+            </ul>
+          </li>
+
+
+          </ul>
+        </div>
+        <div class="admin-menu">
+          <h5 class="sidenav-heading" style="color:#000;">MANAGEMENT</h5>
+          <ul id="side-admin-menu" class="side-menu list-unstyled"> 
+            <li> <a href= {% url "dashboard" %} ><i class="fa fa-cog" aria-hidden="true"></i>ADMINISTRACION
+                <div class="badge badge-info">Datos</div></a></li>
+          <!-- CRUD USERS MENU -->  
+          <li><a href= "#user_Dropdown" aria-expanded="false" data-toggle="collapse"><i class="fa fa-user-circle" aria-hidden="true"></i>  Usuario </a>
+            <ul id="user_Dropdown" class="collapse list-unstyled ">
+              <li><a href={% url "all_users" %}>Todos</a></li>
+              <li><a href={% url "user_create" %}>Nuevo</a></li>
+               
+            
+            </ul>
+          </li>
+
+          <!-- CRUD MESSAGE MENU --> 
+          <li><a href= "#message_Dropdown" aria-expanded="false" data-toggle="collapse"><i class="icon-mail" aria-hidden="true"></i>  Mensajes</a>
+            <ul id="message_Dropdown" class="collapse list-unstyled ">
+              <li><a href={% url "all_chats" %}><i class="fa fa-th" aria-hidden="true"></i>Todos</a></li>
+              <li><a href={% url "new_chat" %}><i class="fa fa-plus-circle" aria-hidden="true"></i>Crear</a></li>
+              
+            </ul>
+          </li>
+
+          
+            <!-- CRUD SUPERCOLUMN MENU -->
+            <li><a href= "#supercolumns_Dropdown" aria-expanded="false" data-toggle="collapse"><i class="fas fa-columns"></i> SUPERCOLUMNAS</a>
+              <ul id="supercolumns_Dropdown" class="collapse list-unstyled ">
+                <li><a href={% url "all_supercolumns" %}>Todas</a></li>
+                <li><a href={% url "supercolumn_create" %}>Nueva</a></li>
+                
+              </ul>
+            </li>
+          
+              <!-- CRUD COLUMN MENU -->
+              <li><a href= "#column_Dropdown" aria-expanded="false" data-toggle="collapse"><i class="fas fa-border-all"></i>  COLUMNAS</a>
+                <ul id="column_Dropdown" class="collapse list-unstyled ">
+                  <li><a href={% url "all_columns" %}>Todas</a></li>
+                  <li><a href={% url "column_create" %}>Nueva</a></li>
+                  
+                </ul>
+              </li>
+          
+          
+          
+          
+          
+           <!-- FINAL  MENU --> 
+           
+          <h5 class="sidenav-heading" style="color:orange;">TASKER</h5>
+          <ul id="side-admin-menu" class="side-menu list-unstyled"> 
+            <li> <a href= {% url "help" %} ><i class="fa fa-cog fa-spin fa-3x fa-fw"></i>
+              <span class="sr-only">Working...</span>AYUDA
+                <div class="badge badge-info">ESPECIALISTAS</div></a></li>
+          
+            
+          </ul>
+        </div>
+      </div>
+    </nav>
+    {% endblock %}
+    <!-- END BLOCK LATERAL MENU --> 
+
+    <!-- BLOCK NOTIFICATIONS --> 
+    <div class="page">
+      
+      <!-- navbar-->
+      <header class="header">
+        <nav class="navbar">
+          <div class="container-fluid">
+            <div class="navbar-holder d-flex align-items-center justify-content-between">
+              <div class="navbar-header"><a id="toggle-btn" href={% url "dashboard" %} class="menu-btn"><i class="icon-bars"> </i></a><a href={% url "dashboard"  %} class="navbar-brand">
+                  <div class="brand-text d-none d-md-inline-block"><span>Area </span><strong style="color:#fff"> TASKER MANAGER</strong></div></a></div>
+              <ul class="nav-menu list-unstyled d-flex flex-md-row align-items-md-center">
+                
+                <!-- Notifications dropdown-->
+                <li class=""> <a id="notifications" rel="nofollow"  href={% url "all_tasks" %}  class="nav-link"><i class="fa fa-bell"></i><span class="badge badge-warning">Ayuda</span></a>
+                 
+                  <ul aria-labelledby="notifications" class="dropdown-menu">
+                    <li><a rel="nofollow" href={% url "dashboard" %} class="dropdown-item"> 
+                        <div class="notification d-flex justify-content-between">
+                          <div class="notification-content"><i class="fa fa-envelope"></i> </div>
+                          <div class="notification-time"><small>4 minutes ago</small></div>
+                        </div></a></li>
+                    <li><a rel="nofollow" href={% url "dashboard" %} class="dropdown-item"> 
+                        <div class="notification d-flex justify-content-between">
+                          <div class="notification-content"><i class="fa fa-twitter"></i>You have 2 followers</div>
+                          <div class="notification-time"><small>4 minutes ago</small></div>
+                        </div></a></li>
+                    <li><a rel="nofollow" href={% url "dashboard"  %}class="dropdown-item"> 
+                        <div class="notification d-flex justify-content-between">
+                          <div class="notification-content"><i class="fa fa-upload"></i>Server Rebooted</div>
+                          <div class="notification-time"><small>4 minutes ago</small></div>
+                        </div></a></li>
+                    <li><a rel="nofollow" href={% url "dashboard" %} class="dropdown-item"> 
+                        <div class="notification d-flex justify-content-between">
+                          <div class="notification-content"><i class="fa fa-twitter"></i>You have 2 followers</div>
+                          <div class="notification-time"><small>10 minutes ago</small></div>
+                        </div></a></li>
+                    <li><a rel="nofollow" href={% url "dashboard" %} class="dropdown-item all-notifications text-center"> <strong> <i class="fa fa-bell"></i>view all notifications </strong></a></li>
+                  </ul> 
+                </li>
+                <!-- Messages dropdown-->
+                
+                <!-- Languages dropdown    
+                <li class="nav-item dropdown"><a id="languages" rel="nofollow" data-target="#" href={% url "dashboard" %} data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link language dropdown-toggle"><img src={% static "img/flags/16/GB.png"  %}alt="English"><span class="d-none d-sm-inline-block">English</span></a>
+                  <ul aria-labelledby="languages" class="dropdown-menu">
+                    <li><a rel="nofollow" href={% url "dashboard" %} class="dropdown-item"> <img src={% static "img/flags/16/DE.png" %} alt="English" class="mr-2"><span>German</span></a></li>
+                    <li><a rel="nofollow" href={% url "dashboard" %} class="dropdown-item"> <img src={% static "img/flags/16/FR.png" %} alt="English" class="mr-2"><span>French                                                         </span></a></li>
+                  </ul>
+                </li>-->
+                <!-- Log out-->
+                <li class="nav-item"><a href= {% url "logout" %}  class="nav-link  logout" style="color:#000;"> <span class="d-none d-sm-inline-block"> Salir  </br> </span><i class="fas fa-sign-out-alt" style="color:#fff; margin-left:12px; "></i></a></li>
+              </ul> 
+            </div>
+          </div>
+        </nav>
+      </header>
+      <!-- END BLOCK  NOTIFICATIONS -->
+    
+      <!-- BLOCK  COUNTERS -->
+      
+      <!-- END BLOCK COUNTERS--> 
+
+      <!-- BLOCK CONTENT--> 
+      {%block content%}
+      <!-- Header Section-->
+      <div>
+        {% include "bases/dashboard.html"%}
+        {% include "bases/dashboard_dos.html"%}
+      </div>
+      <div class = "original_content">
+          <section class="dashboard-header section-padding">
+            <div class="container-fluid">
+              <div class="row d-flex align-items-md-stretch">
+
+                 To Do List
+                <div class="col-lg-4 col-md-6">
+                  <div class="card to-do">
+                    <h2 class="display h4">Tareas Activas</h2>
+                    <div class="icon"><i class="fa fa-filter text-warning" aria-hidden="true"></i></div>
+                    <p>Todas las tareas pendientes</p>
+                    <ul class="check-lists list-unstyled">
+                      {% for a in tareas_pendientes %}
+                      <li class="d-flex align-items-center"> 
+                        <input type="checkbox" id="list-1" name="list-1" class="form-control-custom">
+                        <label for="list-1"><a href="{% url 'task_edit' a.id%}"> {{a.title}} <span><i class="fa fa-eye"></span></a></label>
+                      </li>
+                      <i class="fa fa-filter" aria-hidden="true"></i>
+                      
+                      {% empty%} <strong style="color:magenta;">No tienes ninguna tarea activa </strong> 
+                      {% endfor%}
+                    </ul>
+                  </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                  <div class="card to-do">
+                    <h2 class="display h4">Tareas terminada</h2>
+                      <div class="icon "><i class="fa fa-bomb text-success" aria-hidden="true"></i></div>
+
+                      <p>Entrevistas cuya fecha de ejecución ha vencido.</p>
+                    <ul class="check-lists list-unstyled">
+                      {% for b in tareas_terminadas %}
+                      <li class="d-flex align-items-center"> 
+                        <input type="checkbox" id="list-1" name="list-1" class="form-control-custom">
+                        <label for="list-1"><a href="{% url 'all_tasks' %}"> {{tareas_terminadas|default:'0'}} <span><i class="fa fa-eye"></span></a></label>
+                      </li>
+                    
+                      
+                      {% empty%} <strong style="color:magenta;">No tienes tarea terminada </strong> 
+                      {% endfor%}
+                    </ul>
+                  </div>
+                </div>
+                
+                
+
+                
+
+                <!-- Pie Chart-->
+                <div class="col-lg-3 col-md-6">
+                  <div class="card project-progress">
+                    <h2 class="display h4">Project Beta progress</h2>
+                    <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                    <div class="pie-chart">
+                      <canvas id="pieChart" width="300" height="300"> </canvas>
+                    </div>
+                  </div>
+                </div>
+                <!-- Line Chart -->
+                <div class="col-lg-6 col-md-12 flex-lg-last flex-md-first align-self-baseline">
+                  <div class="card sales-report">
+                    <h2 class="display h4">Sales marketing report</h2>
+                    <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolor amet officiis</p>
+                    <div class="line-chart">
+                      <canvas id="lineCahrt"></canvas>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        <!-- Statistics Section-
+        <section class="statistics">
+          <div class="container-fluid">
+            <div class="row d-flex">
+              <div class="col-lg-4">
+                <!-- Income
+                <div class="card income text-center">
+                  <div class="icon"><i class="fa fa-bomb" aria-hidden="true"></i></div>
+                  <div class="number text-danger">{{orders_overtime|default:'0'}}</div><strong class="text-warning">ORDENES FUERA DE FECHA</strong>
+                  <p>Cantidad de ordenes  cuya fecha de ejecución ha vencido.</p>
+                </div>
+              </div>
+              <div class="col-lg-4">
+                <!-- Monthly Usage-
+                <div class="card data-usage">
+                  <h2 class="display h4">COMERCIALES EN RUTA</h2>
+                  <div class="row d-flex align-items-center">
+                    <div class="col-sm-6">
+                      <div id="progress-circle" class="d-flex align-items-center justify-content-center"></div>
+                    </div>
+                    <div class="col-sm-6"><strong class="text-primary">{{on_route|default:'0'}}</strong><small>Comerciales</small><span>Ruta iniciada</span></div>
+                  </div>
+                  <p>Cantidad ordenes en ruta: <span style="color:red; font-size:2em;">{{ solicitudes_en_ruta|default:0}}</span> </p>
+                </div>
+              </div>
+              <div class="col-lg-4">
+                <!-- User Actibity
+                <div class="card user-activity">
+                  <h2 class="display h4">Solicitudes eliminadas</h2>
+                  <div class="number">{{solicitudes_eliminadas|default:0}}</div>
+                  <!-- 
+                  <h3 class="h4 display">Social Users</h3>
+                  <div class="progress">
+                    <div role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" class="progress-bar progress-bar bg-primary"></div>
+                  </div>
+                  <div class="page-statistics d-flex justify-content-between">
+                    <div class="page-statistics-left"><span>Pages Visits</span><strong>230</strong></div>
+                    <div class="page-statistics-right"><span>New Visits</span><strong>73.4%</strong></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section> -->
+
+      
+        <!-- SECTION IMAGENS
+        <div id="content">
+          <!--start container
+          <div class="container">
+            <!--start section
+            <section class="bar">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="heading">
+                    <h2>Cursos</h2>
+                  </div>
+                  <p class="lead">Cursos activos.</p>
+                </div>
+              </div>
+              <!--start  row portfolio div
+              
+              <div class="row portfolio text-center">
+                {% for c in course%}
+                <!--start  image div
+                <div class="col-md-3">
+                  <p class="text-bg-success">{{c.course_name}}</p>
+                  <div class="box-image">
+                    <div class="image"><img src= {% static "img/backcurso.png" %} alt="" class="img-fluid">
+                      <div class=" d-flex align-items-center justify-content-center">
+                        <div class="content">
+                          <div class="name mb-small">
+                            <h3><a href="{% url 'detail_course' c.id %}"class="color-white">{{c.course_name}}</a></h3>
+                          </div>
+                          <div class="text">
+                            <p class="text-bg-info">{{c.description|truncatewords:'30'}}</p>
+                            <p class="buttons"><a href="{% url 'detail_course' c.id %}" class="btn btn-template-outlined-white">Duración</a><a href="{% url 'detail_course' c.id %}" class="btn btn-template-outlined-white">{{c.duration}}</a></p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!--start  image div
+                    {% empty%} 
+                    <h3 style="color: magenta;"> No tienes cursos creados</h3>
+                    {% endfor%}
+
+              </div>
+              <!-- end  row portfolio div
+  
+            </section>
+            <!-- end section
+          </div>
+          <!-- end container
+        </div>
+        
+      
+      
+
+
+        <!-- Updates Section -->
+        <section class="mt-0px mb-15px">
+          <div class="container-fluid">
+            
+            <div class="row">
+              
+              <div class="col-lg-4 col-md-12">
+                <!-- ORDENES ACTIVAS         -->
+                <div id="new-updates" class="card updates recent-updated">
+                  <div id="updates-header" class="card-header d-flex justify-content-between align-items-center">
+                    <h2 class="h5 display"><a data-toggle="collapse" data-parent="#new-updates" href={% static "updates-box" %} aria-expanded="true" aria-controls="updates-box">Ordenes activas</a></h2>
+                    <div class="badge badge-primary">  {{active|default:'0'}}  Ordenes</div>
+                    <a data-toggle="collapse" data-parent="#new-updates" href={% static "#updates-box" %} aria-expanded="true" aria-controls="updates-box"><i class="fa fa-angle-down"></i></a>
+                  </div>
+                  <div id="updates-box" role="tabpanel" class="collapse show">
+                    <ul class="news list-unstyled">
+                      {% for a in orders %}
+                        <!-- Item-->
+                        <li class="d-flex justify-content-between"> 
+                          <div class="left-col d-flex">
+                            <div class="icon"><i class="icon-rss-feed"></i></div>
+                            <div class="title"><strong><a href="{% url 'update_order' a.id%}"> {{a.order_name}}</a></strong>
+                              <p>{{a.position}}.</p>
+                              <p>{{a.job_type}}.</p>
+                              <p>{{a.description|truncatewords:"25"}}</p>
+                              <p>{{a.offer_owner}}</p>
+                              <p>{{a.offer_status}}</p>
+
+                            </div>
+                          </div>
+                          <div class="right-col text-right">
+                            <div class=" update update-date"><span ><p class="text-danger"style="width:100px;" >{{a.publication_date}}</p></span></div>
+                          </div>
+                        </li>
+                        {% empty%} <strong style="color:magenta;">No tienes ninguna orden de trabajo activa </strong>
+                        {% endfor %}
+                                <!-- Item-->
+                      
+                      
+                      
+                      
+                    </ul>
+                  </div>
+                </div>
+                <!-- Recent Updates Widget End-->
+              </div>
+
+
+              <div class="col-lg-4 col-md-6" id="active_messages">
+                <!-- Daily Feed Widget-->
+                <div id="daily-feeds" class="card updates daily-feeds">
+                  <div id="feeds-header" class="card-header d-flex justify-content-between align-items-center">
+                    <h2 class="h5 display"><a data-toggle="collapse" data-parent="#daily-feeds" href={% static "#feeds-box" %} aria-expanded="true" aria-controls="feeds-box">Mensajes </a></h2>
+                    <div class="right-column">
+                     
+                      <div class="badge badge-primary">  {{quantity_messages|default:'0'}}messages</div><a data-toggle="collapse" data-parent="#daily-feeds" href={% static "#feeds-box" %} aria-expanded="true" aria-controls="feeds-box"><i class="fa fa-angle-down"></i></a>
+                    </div>
+                  </div>
+                  <div id="feeds-box" role="tabpanel" class="collapse show">
+                    <div class="feed-box">
+                      <ul class="feed-elements list-unstyled">
+                        
+                        <!-- List-->
+                        {% for a in messages %}
+                         
+                        <li class="clearfix">
+                          <div>
+                            <div style="width:50%;">
+                              <p>Enviado por:</p>
+                              <span><a href="{% url 'message_thread' a.id %}"><i class="fa fa-eye" style="color:red; "></i></a></span>
+                              <strong>{{a.sender|default:'Juan Lobo'}}</strong>
+                            </div>
+                            <div class="date" style="width:50%;">
+                              <small style="background-color:#000;color:#fff;">Hace: {{a.tiempo|default:'0'}}</small>
+                            </div>
+                          </div>
+                          <div class="feed d-flex justify-content-between">
+                            
+                          <div class="content">
+                            <strong>Para: {{a.receiver|default:'Aria Smit'}}</strong>
+                            <small style="font-weight:bold; color:red;">{{a.message_topic|default:'Posted a new blog'}} </small>
+                                <p>
+                                  {{a.message_text|default:'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry´s standard dummy text ever since the 1500s. Over the years, sometimes by accident, sometimes on purpose (injected humour and the like)'|truncatewords:'10'}}
+                                </p>
+                                
+                             
+                            <div class="full-date">
+                              <small>Fecha de envio:</small>
+                              <p>{{a.message_date|default:'Today 5:60 pm - 12.06.2014'}}</p>
+                            </div>
+
+                          
+
+                          </div>
+                        </li>{% empty%} <strong style="color:magenta"> No tienes ningun mensaje</strong>
+                        {% endfor %}
+                        
+                        
+                        
+                          
+                        
+                        <!-- List-->
+                        
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                <!-- Daily Feed Widget End-->
+              </div>
+              <div class="col-lg-4 col-md-6">
+                <!-- Actives tasks      -->
+                <div id="recent-activities-wrapper" class="card updates activities">
+                  <div id="activites-header" class="card-header d-flex justify-content-between align-items-center">
+                    <h2 class="h5 display"><a data-toggle="collapse" data-parent="#recent-activities-wrapper" href={% static "#activities-box" %} aria-expanded="true" aria-controls="activities-box">Tareas Activas</a></h2>
+                    <div class="badge badge-primary">  {{quantity_tasks|default:'0'}}  Tareas</div>
+                    <a data-toggle="collapse" data-parent="#recent-activities-wrapper" href={% static "#activities-box" %} aria-expanded="true" aria-controls="activities-box"><i class="fa fa-angle-down"></i></a>
+                  </div>
+                  
+                  <div id="activities-box" role="tabpanel" class="collapse show">
+                    <ul class="activities list-unstyled">
+                      
+                      {% for t in tasks%}
+                      <!-- Item-->
+                      <li>
+                        <div class="row">
+                          <div class="col-4 date-holder text-left">
+                            <div style="background-color:yellow;">
+              
+                              <strong style="color:red;">{{t.task_name|default:'Reunion '}}</strong>
+                            </div>
+                            <div class="icon"><i class="icon-clock"></i></div>
+
+                            <div class="date" style="font-size:0.9em;"> 
+                              Vence:<p style="color:green;">{{t.compliance_date|default:'2024-12-12 00:00:00'}} </p>
+                             
+                              <p class="text-info"> Faltan: {{t.get_time_diff|default:'0'}} horas</p></div>
+                          </div>
+                          <div class="col-8 content"><strong>Creada por:{{t.created_by|default:'Jose Lobo'}}</strong>
+                            <p>{{task_description|default:'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud.'}} </p>
+                          </div>
+                        </div>
+                      </li>
+                      {% empty%} <strong style="color:magenta;">No tienes tareas pendientes </strong>
+                      {% endfor %}
+                      <!-- Item-->
+ 
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+              {% endblock%}
+      
+          <!-- END BLOCK CONTENT-->  
+          <!-- BLOCK FOOTER-->  
+            {% block footer %}   
+              <footer class="main-footer">
+                <div class="container-fluid">
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <p>Robotycal &copy; 2021-2030</p>
+                    </div>
+                    <div class="col-sm-6 text-right">
+                      <p>Design by <a href={% static "https://robotycal.com/" %} class="external">Robotycal</a></p>
+                    </div>
+                  </div>
+                </div>
+              </footer>
+            {% endblock %}
+          <!-- END BLOCK FOOTER-->
+       
+    </div>
+    <!-- JavaScript files-->
+    <script src={% static "vendor/jquery/jquery.min.js" %}></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
+    <!-- JavaScript Bundle with Popper -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14.0/js/all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <!-- FUNCIONA EL DESPLEGABLE CORREGIR LUEGO LOS ARCHIVOS-->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha384-JZN8IkRvRSJGJ0XbXBsOV9WreZuqC8M9/QwhMNB6mmdK6bIbbVYUeG0N3gkFfJp6" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.3/umd/popper.min.js" integrity="sha384-lrD28wOr+QwWJLf8T6IWv9pXsNSI+SNKuwJibkvlxp1nqEdTrwYYfOkGveC8FKvY" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/js/bootstrap"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+    
+    <script src={% static "vendor/popper.js/umd/popper.min.js" %}> </script>
+    <script src={% static "vendor/bootstrap/js/bootstrap.min.js" %}></script>
+    <script src={% static "js/grasp_mobile_progress_circle-1.0.0.min.js" %}></script>
+    <script src={% static "vendor/jquery.cookie/jquery.cookie.js" %}> </script>
+    <script src=https://code.jquery.com/jquery-3.1.1.min.js></script>
+    <script src={% static "vendor/chart.js/Chart.min.js" %}></script>
+    <script src={% static "vendor/jquery-validation/jquery.validate.min.js" %}></script>
+    <script src={% static "vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js" %}></script>
+    <script src="{% static 'jquery-3.6.0.min.js' %}"></script>
+    <script src="{% static 'jquery-ui-1.12.1/jquery-ui.min.js' %}"></script>
+    <script src="{% static 'kanban_board.js' %}"></script>
+    <script src={% static "js/charts-home.js" %}></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js"></script>
+    
+    <!-- Main File-->
+    <script src={% static "js/front.js" %}></script>
+
+    {%block extra_js%}
+
+<!--EVOLUCION DE LAS TAREAS DETALLE--> 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        var ctx = document.getElementById('detail_chart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: {{ chart_data.labels|safe }},
+                datasets: [{
+                    label: 'Evolución',
+                    data: {{ chart_data.data|safe }},
+                    backgroundColor: 'rgba(36, 112, 218, 1)',
+                    borderColor: 'rgba(36, 112, 218, 1)',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                scales: {
+                  y: {
+                    title: {
+                      display: true,
+                      text: 'Value'
+                      },
+                      min: 0,
+                      
+                      ticks: {
+                        // forces step size to be 50 units
+                        stepSize: 1
+                      }
+                    }
+                }
+            }
+        });
+    </script>
+
+<!-- TAREAS CUMPLIDAS VERSUS PENDIENTES -->
+
+<script>
+    var ctx = document.getElementById('cumplidas_pendientes_chart').getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: ['Cumplidas', 'Pendientes'],
+            datasets: [{
+                label: 'Tareas cumplidas vs Pendientes',
+                data: {{task_data|safe}},
+                backgroundColor: [
+                    
+                    'rgba(8, 131, 6, 1)',
+                    'rgba(228, 174, 10, 1)',
+                    
+                    
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+  </script>
+
+
+
+<!-- TAREAS POR COLUMNA-->
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    var valores = {{ valores|safe }};
+    console.log(valores)
+    var colores = ['rgba(255, 99, 132, 0.5)', 'rgba(54, 162, 235, 0.5)', 'rgba(255, 206, 86, 0.5)', 'rgba(75, 192, 192, 0.5)', 'rgba(153, 102, 255, 0.5)', 'rgba(255, 159, 64, 0.5)'];
+
+    var atx = document.getElementById('tareas_x_columna').getContext('2d');
+    var miGrafico = new Chart(atx, {
+        type: 'bar',
+        data: {
+            labels: {{ etiquetas|safe }},
+            datasets: [{
+                data: [{{ valores|safe }}],
+                backgroundColor: colores.slice(0, valores.length),
+                borderColor: colores.slice(0, valores.length),
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+              y: {
+                title: {
+                  display: true,
+                  text: 'Value'
+                  },
+                  min: 0,
+                  
+                  ticks: {
+                    // forces step size to be 50 units
+                    stepSize: 1
+                  }
+                }
+            }
+        }
+    });
+
+  </script>
+
+  <!--REUNIONES POR MES DETALLE-->
+
+  <script>
+    var ctx = document.getElementById('meetingChart').getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: {{ months|safe }},
+            datasets: [{
+                label: 'Reuniones por mes',
+                data: {{ counts|safe }},
+                borderColor: 'rgb(54, 162, 235)',
+                fill: false
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              y: {
+                title: {
+                  display: true,
+                  text: 'Value'
+                  },
+                  min: 0,
+                  
+                  ticks: {
+                    // forces step size to be 50 units
+                    stepSize: 1
+                  }
+                }
+            }
+        }
+    });
+</script>
+
+
+<!--REUNIONES POR MES-->
+<script>
+  var ctx = document.getElementById('reuniones_mes').getContext('2d');
+  var myChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+          labels: [{{ months|safe }}],
+          datasets: [{
+              label: 'Reuniones por mes',
+              data: {{ counts|safe }},
+              borderColor: 'rgb(54, 162, 235)',
+              fill: false
+          }]
+      },
+      options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: {
+              title: {
+                display: true,
+                text: 'Quantity'
+                },
+                min: 0,
+                
+                ticks: {
+                  // forces step size to be 50 units
+                  stepSize: 1
+                }
+              }
+          }
+      }
+  });
+</script>
+
+
+
+<!-- PROYECTOS POR MES-->
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+      
+
+    var moy = [];
+    var proy = [];
+    {% for pr in moy %}
+        moy.push('{{ pr.mes }}');
+    {% endfor %}
+    {% for pr in proy %}
+        proy.push('{{ pr.cantidad }}');
+    {% endfor %}
+      
+        var ctx = document.getElementById('proyectos-mes').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: moy,
+                datasets: [{
+                    label: 'Proyectos x Mes',
+                    data: proy,
+                    backgroundColor: 'rgba(54, 162, 0, 1)',
+                    borderColor: 'rgba(54, 162, 0, 1)',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                scales: {
+                  y: {
+                    title: {
+                      display: true,
+                      text: 'Quantity'
+                      },
+                      min: 0,
+                      
+                      ticks: {
+                        // forces step size to be 50 units
+                        stepSize: 1
+                      }
+                    }
+                }
+            }
+        });
+    </script>
+
+
+
+
+<!--REUNIONES POR MES-->
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+      
+
+    var meses = [];
+    var reun = [];
+    {% for pr in meses %}
+        meses.push('{{ pr.mes }}');
+    {% endfor %}
+    {% for pr in reun %}
+        reun.push('{{ pr.cantidad }}');
+    {% endfor %}
+      
+        var ctx = document.getElementById('reuniones_mes').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: meses,
+                datasets: [{
+                    label: 'Proyectos x Mes',
+                    data: reun,
+                    backgroundColor: 'rgba(167, 6, 159, 1)',
+                    borderColor: 'rgba(167, 6, 159, 1)',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                scales: {
+                  y: {
+                    title: {
+                      display: true,
+                      text: 'Quantity'
+                      },
+                      min: 0,
+                      
+                      ticks: {
+                        // forces step size to be 50 units
+                        stepSize: 1
+                      }
+                    }
+                }
+            }
+        });
+    </script>
+
+
+<!-- EQUIPOS POR MES -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+      
+      //console.log('loco')
+        var periodo = [];
+        var equipo = [];
+        {% for pr in periodo %}
+            periodo.push('{{ pr.mes }}');
+        {% endfor %}
+        {% for pr in equipo %}
+            equipo.push('{{ pr.cantidad }}');
+        {% endfor %}
+        //console.log('esto es equipo'+equipo)
+      
+        var ctx = document.getElementById('equipos-mes').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: periodo,
+                datasets: [{
+                    label: 'Proyectos x Mes',
+                    data: equipo,
+                    backgroundColor: 'rgba(28, 235, 246, 1)',
+                    borderColor: 'rgba(28, 235, 246 1)',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                scales: {
+                  y: {
+                    title: {
+                      display: true,
+                      text: 'Quantity'
+                      },
+                      min: 0,
+                      
+                      ticks: {
+                        // forces step size to be 50 units
+                        stepSize: 1
+                      }
+                    }
+                }
+            }
+        });
+    </script>
+
+   
+
+
+
+
+{% endblock %}
+
+
+
+ 
+
+  </body>
+  
+</html>
+
+

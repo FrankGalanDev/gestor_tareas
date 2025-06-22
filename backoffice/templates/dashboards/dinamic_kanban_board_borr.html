@@ -1,0 +1,69 @@
+<html>
+{%load static%}
+
+
+<!--Obtenemos  las columnas existentes de la base de datos y consultamos para obtener las instancias 
+ de Column.  columns = Column.objects.all() e iteramos sobre las columnas existentes para generar
+las secciones correspondientes en la plantilla con un  bucle for. 
+Empleo el método slugify() para convertir el nombre de la columna en un identificador válido para HTML
+(si el nombre es "Ready to Start", se convierte en "ready-to-start").
+Uso el atributo card_set para obtener las tarjetas asociadas a cada columna.
+card_set es el nombre por defecto que Django usa para referirse al conjunto de objetos relacionados 
+en un modelo de uno a muchos (en este caso, las tarjetas relacionadas con cada columna).
+La función moverCol() usara el identificador de la columna como valor dinamico. Se puede usar
+ el identificador obtenido de la sección correspondiente en la pantilla para asignar el valor correcto 
+ a la variable column_id. -->
+ 
+ <p> Super: {{supercolumns}} </p>
+ 
+
+ <p> Colum{{columns }}</p>
+ <p> tar{{tareas}} </p>
+ <p> Tr1{{object.tasks }}</p>
+ <p> Id{{project}}</p>
+
+
+{% for column in columns %}
+    <div class="col-md-3">
+    <div id="{{ column.column_name|slugify }}-column" class="column" ondrop="moverCol(event, '{{ column.column_name|slugify }}-column')" ondragover="event.preventDefault()">
+        <h3>{{ column.column_name }}</h3>
+        {% for card in column.card_set.all %}
+        <div id="{{ card.id }}" class="card draggable" draggable="true" ondragstart="event.dataTransfer.setData('text/plain', event.target.id)">
+            <p class="task-name-requested">{{ card.task_name }}</p>
+            <p class="task-description-requested">{{ card.task_description|truncatewords:10|default:'sin descripcion' }}</p>
+            <p class="task-compliance-requested">{{ card.compliance_date }}</p>
+            <p class="task-time-left-requested">{{ card.get_time_diff }}</p>
+        </div>
+        {% endfor %}
+    </div>
+    </div>
+{% endfor %}
+<script>
+    /*En este ejemplo se usa el método findIndex() para buscar el índice de la 
+    columna correspondiente en la lista columns (que se obtiene en el paso 1). 
+    Se resta 1 al índice para obtener el valor correcto de column_id. También se elimina el 
+    sufijo "-column" del identificador de la columna, ya que no es necesario para buscar 
+    el nombre correspondiente en columns.*/
+  
+function moverCol(event, columna) {
+    event.preventDefault();
+    var task_id = event.dataTransfer.getData("text/plain");
+    var divAMover = document.getElementById(task_id);
+    document.getElementById(columna).appendChild(divAMover);
+  
+    console.log(divAMover)
+    console.log(task_id + " dropped into " + columna);
+  
+    column_id = columns.findIndex(x => x.column_name == columna.replace('-column', '')) + 1;
+  }
+</script>
+  
+  
+  
+ 
+  
+
+
+
+
+</html>

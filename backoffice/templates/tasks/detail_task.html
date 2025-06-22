@@ -1,0 +1,106 @@
+{% extends 'bases/dashboard_detail.html'%}
+{%load static %}
+
+
+
+{% block detail %}
+
+
+<div class="row justify-content-between ml-10px" style="background-color:#dde2e2;"> 
+    <div class="row"> 
+                    
+      <h2 style="color:#000; padding:0.5em; margin-left:15%;font-size:1.5em; height:2em;" > {{object.task_name|default:''}}
+       
+    </div>
+   
+    <div class="progress" style="margin-top:15px; margin-bottom:15px; height:20px; background-color:#000;">
+      <h6 style="color:#fff; margin-right: 20px;"> PROGRESO : </h6>
+        
+          <span class="progress-bar bg-warning" role="progressbar" style="width:{{object.progreso}}%;  ">
+            {{object.progreso}} %
+          </span>
+        
+       
+      
+    </div>
+
+    <div style="background-color:#dde2e2;">
+      <div  style="border: 3px solid #fff;">
+        <p style=" font-weight:bold; color:gray;">CREADA POR</p>
+          <p style="color:#000;font-size:1.2em;"> {{object.created_by|default:'Este dato no se ha añadido'}}</p>
+      </div>
+
+      <div  style="border: 3px solid #fff;">
+        <p style=" font-weight:bold; color:gray;">COLUMNA</p>
+          <p style="color:#000;font-size:1.2em;"> {{object.column|default:'Este dato no se ha añadido'}}</p>
+      </div>
+      
+      <div  style="border: 3px solid #fff;">
+          <p style=" font-weight:bold; color:gray;">RESPONSABLE</p>
+          <p style="color:#000;font-size:1.2em;"> {{object.owner_name|default:'Esta tarea no tiene un responsable'}}</p>
+      </div>
+      <div  style="border: 3px solid #fff;">
+          <p style=" font-weight:bold; color:gray;">FECHA DE CUMPLIMIENTO</p>
+          <p style="color:#000;font-size:1.2em;"> {{object.compliance_date|default:'Este dato no se ha añadido'}}</p>
+      </div>
+      <div  style="border: 3px solid #fff;">
+          <p style=" font-weight:bold; color:gray;">DESCRIPCION DE LA TAREA</p>
+          <p style="color:#000;font-size:1.2em;"> {{object.task_description|default:'Este dato no se ha añadido'}}</p>
+      </div>
+      <div  style="border: 3px solid #fff;">
+        <p style=" font-weight:bold; color:gray;">ESTADO DE LA TAREA</p>
+        <p style="color:#000;font-size:1.2em;"> {{object.status|default:'Este dato no se ha añadido'}}</p>
+    </div>
+
+      <div  style="border: 3px solid #fff;">
+          <p style=" font-weight:bold; color:gray;">POSICION</p>
+          {% if  object.on %}
+            <p style="color:#000;font-size:1.2em;"> Activa</p>
+          {% else %}
+            <p style="color:#000;font-size:1.2em;"> Inactiva</p>
+          {% endif %}
+
+      </div>
+      
+
+      
+      <div class="container">
+        <h1>{{ object.task_name }}</h1>
+        <!--<h1>{{chart_data }}</h1>-->
+        <canvas id="detail_chart"></canvas>
+        {% include 'graphs/detail_task_chart.html' %}
+      </div>
+      
+      
+      <div class="row" > 
+        <div class="card-footer col-2" style="background:transparent;"> 
+          <button type="button"  class="btn btn-dark btn-flat" >
+            <a href="{% url 'all_tasks' %}" >
+              <i class="fas fa-undo-alt" style="color:white;"></i>
+              Volver
+            </a>
+          </button>
+        </div>
+        <div class="card-footer col-2" style="background:transparent;"> 
+          <button type="button"  class="btn btn-warning btn-flat" >
+            <a href="{% url 'task_update' object.id %}">
+              <i class="fas fa-edit" aria-hidden="true" style="color:#fff;"></i> 
+              Editar
+            </a>
+          </button>    
+        </div>
+      </div>
+     
+
+    
+     
+      
+      
+
+   
+
+
+      
+
+</div>
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends 'bases/dashboard_delete.html'%}
+   
+  
+
+    {% block form %} 
+ 
+      <div class="card-footer mx-3">   
+        <div class="col-md-8"  style=" background-color:red; box-shadow:3px 2px 1px gray;">  
+          <h5 style="font-size:1.2em; color:#fff; font-weight:bold; align-items:center;" > Hola, vas a borrar el equipo llamado: {%block name %} {{object.name }} {% endblock %} </h5>
+        </div>    
+          <button type="button "  id="return_to_list"class="btn btn-info mx-3 return" >
+            {%block return %}
+            <a href="{% url 'all_teams' %}" style="color:white" >
+              <i class=" fa fa-undo"></i>
+              Cancelar
+            </a> 
+            
+            {% endblock %}
+          </button>
+
+          <button type="submit"  id="erase_item" class="btn btn-danger btn-flat ">
+            <i class=" fa fa-trash"></i>
+                Si, borrar
+          </button>
+          
+        </div>  
+                  
+        
+    {% endblock %}
+                            
+
+  
+     
+
+      
+ 

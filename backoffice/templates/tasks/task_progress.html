@@ -1,0 +1,43 @@
+<html>
+{%load static %}
+
+
+
+{% block content %}
+  <h1>{{ task.title }}</h1>
+  <p>{{ task.description }}</p>
+  <p>Evolucióna:</p>
+  <div id="chart_div"></div>
+{% endblock %}
+
+{% block javascript %}
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script type="text/javascript">
+    google.charts.load('current', {'packages':['corechart']});
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+      var data = google.visualization.arrayToDataTable([
+        ['Fecha', 'Progreso'],
+        {% for update in task.evolucion %}
+          ['{{ update.fecha|date:"Y-m-d" }}', {{ update.progreso }}],
+        {% endfor %}
+      ]);
+
+      var options = {
+        title: 'Evolución de la tarea',
+        curveType: 'function',
+        legend: { position: 'bottom' }
+      };
+
+      var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+
+      chart.draw(data, options);
+    }
+  </script>
+  {% endblock %}
+</html>
+
+
+
+

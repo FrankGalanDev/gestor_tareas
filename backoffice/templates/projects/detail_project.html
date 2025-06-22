@@ -1,0 +1,94 @@
+{% extends 'bases/dashboard_detail.html'%}
+{%load static %}
+
+
+
+{% block detail %}
+
+
+
+<div class="row justify-content-between ml-10px" style="background-color:#dde2e2;"> 
+  <div class="row"> 
+                  
+    <h2 style="color:#000; padding:0.5em; margin-left:15%;font-size:1.5em; height:2em;" >
+            {{object.project_name|default:''}} 
+
+    </h2>
+  </div>
+
+  <div style="background-color:#dde2e2;">    
+    
+    <div  style="border: 3px solid #fff;">
+      <p style=" font-weight:bold; color:gray;">Descripcion</p>
+     <p style="color:#000;font-size:1.2em;"> {{object.project_description|default:'Este dato no se ha añadido'}}</p>
+    </div>
+    
+
+  </div>
+  <div class="row justify-content-center" >
+  {% for sup in super%}
+  <div class="col-md-3">
+    <h1 style="font_weight:bold;">{{sup.supercolumn_name}}</h1>
+  </div>
+  {%endfor%}
+</div>
+
+  {% for colu in columnas %}
+    <div class="col-md-3">
+      <div id="{{ colu.column_name|slugify }}-colu" class="column" ondrop="moverCol(event, '{{ colu.column_name|slugify }}-colu')" ondragover="event.preventDefault()">
+          <h3>{{ colu.column_name }}</h3>
+          {% for card in colu.task_set.all %}
+          <div id="{{ card.id }}" class="card draggable" draggable="true" ondragstart="event.dataTransfer.setData('text/plain', event.target.id)">
+              <p class="task-name-requested">{{ card.task_name }}</p>
+              <p class="task-description-requested">{{ card.task_description|truncatewords:10|default:'sin descripcion' }}</p>
+              <p class="task-compliance-requested">{{ card.compliance_date }}</p>
+              <p class="task-time-left-requested">{{ card.get_time_diff }}</p>
+          </div>
+          {% endfor %}
+      </div>
+    </div>
+  {% endfor %}
+   
+  
+</div>    
+
+<div class="row"> 
+  <div class="card-footer col-2"> 
+    <button type="button"  class="btn btn-dark btn-flat" >
+      <a href="{% url 'all_projects' %}" >
+        <i class="fas fa-undo-alt" style="color:white;"></i>
+        Volver
+      </a>
+    </button>
+  </div>
+  <div class="card-footer col-2"> 
+    <button type="button"  class="btn btn-warning btn-flat" >
+      <a href="{% url 'project_update' object.id %}">
+        <i class="fas fa-edit" aria-hidden="true" style="color:#fff;"></i> 
+        Editar
+      </a>
+    </button>    
+  </div>
+</div>
+                    
+<script>
+  /*En este ejemplo se usa el método findIndex() para buscar el índice de la 
+  columna correspondiente en la lista columns (que se obtiene en el paso 1). 
+  Se resta 1 al índice para obtener el valor correcto de column_id. También se elimina el 
+  sufijo "-column" del identificador de la columna, ya que no es necesario para buscar 
+  el nombre correspondiente en columns.*/
+
+function moverCol(event, columna) {
+  event.preventDefault();
+  var task_id = event.dataTransfer.getData("text/plain");
+  var divAMover = document.getElementById(task_id);
+  document.getElementById(columna).appendChild(divAMover);
+
+  console.log(divAMover)
+  console.log(task_id + " dropped into " + columna);
+
+  column_id = columns.findIndex(x => x.column_name == columna.replace('-column', '')) + 1;
+}
+</script>                      
+
+  {% endblock %}

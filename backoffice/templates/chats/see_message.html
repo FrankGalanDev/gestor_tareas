@@ -1,0 +1,85 @@
+
+
+{% extends 'layouts/only_view.html'%}
+{%load static %}
+
+
+
+{% block detail %}
+
+  <div class="row justify-content-between ml-10px" style="background-color:#00FFFF;"> 
+    <div class="row"> 
+                    
+      <h2 style="color:#fff; padding:0.5em; margin-left:15%;font-size:1.5em; text-shadow: -2px -2px 1px #000; height:2em;">{{object.message_topic }}</h2>
+    </div>
+
+    <div style="background-color:#D3F1F1;">
+
+      
+      
+      <div  style="border: 3px solid #fff;">
+          <p style=" font-weight:bold; color:gray;">PARA.</p>
+          <p style="color:#000;font-size:1.2em;">  {{object.receiver}} 
+      </div>
+
+      <div  style="border: 3px solid #fff;">
+          <p style=" font-weight:bold; color:gray;">ENVIADO POR</p>
+          <p style="color:#000;font-size:1.2em;">  {{object.sender}} 
+      </div>
+
+      
+
+      <div  style="border: 3px solid #fff;">
+          <p style=" font-weight:bold; color:gray;">CUERPO DEL MENSAJE</p>
+          {% if object.message_text%} 
+            <p style="color:#000;font-size:1.2em;"> {{object.message_text}}</p>
+          {%else%}
+          <p style="color:#000;font-size:1.2em;">Este mensaje no tiene texto</p>
+          {% endif %}
+
+      </div>
+
+      <div  style="border: 3px solid #fff;">
+          <p style=" font-weight:bold; color:gray;">FECHA</p>
+        
+            <p style="color:#000;font-size:1.2em;">  {{object.message_date}} </p>
+        
+      </div>
+       
+      <div  style="border: 3px solid #fff;">
+          <p style=" font-weight:bold; color:gray;">ESTADO DEL MENSAJE</p>
+          <p style="color:#000;font-size:1.2em;">{{object.status }}
+      </div>
+
+  
+  
+    </div> 
+  </div>
+                
+    <div class="row " >     
+      <div class="card-footer col-2"> 
+        <button type="button"  class="btn btn-dark btn-flat" >
+          <a href="{% url 'all_chats' %}" >
+            <i class="fas fa fa-sign-out" style="color:white;"></i>
+            Volver
+          </a>
+        </button>
+      </div>
+      <!-- 
+      <div class="card-footer col-2"> 
+        <button type="button"  class="btn btn-warning btn-flat" >
+          <a href="{% url 'update_usuario' object.id %}">
+            <i class="fa fa-pencil" aria-hidden="true" style="color:#fff;"></i> 
+            Editar
+          </a>
+        </button>
+      </div>
+    -->
+    </div>
+
+                    
+                        
+
+  {% endblock %}
+
+

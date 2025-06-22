@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{%load static %}
+{% block content %}
+  <h1>Move Task</h1>
+  <p>Move "{{ task.task_name }}" to:</p>
+  <form method="post">
+
+
+
+    {% csrf_token %}
+    <select name="column">
+      {% for column in columns %}
+        {% if column == task.column %}
+          <option value="{{ column.id }}" selected>{{ column.name }}</option>
+        {% else %}
+          <option value="{{ column.id }}">{{ column.name }}</option>
+        {% endif %}
+      {% endfor %}
+    </select><br>
+    <input type="submit" value="Move">
+  </form>
+{% endblock %}

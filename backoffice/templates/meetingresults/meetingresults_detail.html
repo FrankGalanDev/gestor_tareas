@@ -1,0 +1,78 @@
+
+{% extends 'bases/dashboard_detail.html' %}
+
+
+
+{% block detail %}
+<div class="row justify-content-between ml-10px" style="background-color:#dde2e2;"> 
+  <div class="row"> 
+                  
+    <h2 style="color:#000; padding:0.5em; margin-left:15%;font-size:1.5em; height:2em;" >
+            {{object.nombre|default:''}}  en {{object.fecha|default:''}} 
+
+    </h2>
+  </div>
+
+  <div style="background-color:#dde2e2;">   
+
+    <div  style="border: 3px solid #fff;">
+      <p style=" font-weight:bold; color:gray;">DESCRIPCION</p>
+      <p style="color:#000;font-size:1.2em;"> {{object.descripcion|default:'Este dato no se ha añadido'}}</p>
+    </div> 
+
+    <div  style="border: 3px solid #fff;">
+      <p style=" font-weight:bold; color:gray;">OBJETIVOS</p>
+      <p style="color:#000;font-size:1.2em;"> {{object.objectives|default:'Este dato no se ha añadido'}}</p>
+    </div> 
+    
+    <div  style="border: 3px solid #fff;">
+      <p style=" font-weight:bold; color:gray;">INICIO</p>
+     <p style="color:#000;font-size:1.2em;"> {{object.start_time|default:'Este dato no se ha añadido'}}</p>
+    </div>
+    
+    <div  style="border: 3px solid #fff;">
+      <p style=" font-weight:bold; color:gray;">FINAL</p>
+      <p style="color:#000;font-size:1.2em;"> {{object.end_time |default:'Este dato no se ha añadido'}}</p>
+    </div>
+
+     <div  style="border: 3px solid #fff;">
+      <p style=" font-weight:bold; color:gray;">PARTICIPANTES</p>
+      {% for p in object.members %}
+        <p style="color:#000;font-size:1.2em;"> {{p.name }} {{p.first_name}} {{p.last_name}} </p>
+      {% endfor %}
+    </div>
+
+    
+   
+    
+
+
+
+  </div>
+
+   
+  
+</div>    
+
+<div class="row"> 
+  <div class="card-footer col-2"> 
+    <button type="button"  class="btn btn-dark btn-flat" >
+      <a href="{% url 'all_meetingresults' %}" >
+        <i class="fas fa fa-sign-out" style="color:white;"></i>
+        Volver
+      </a>
+    </button>
+  </div>
+  <div class="card-footer col-2"> 
+    <button type="button"  class="btn btn-warning btn-flat" >
+      <a href="{% url 'update_meeting' object.id %}">
+        <i class="fas fa-edit" aria-hidden="true" style="color:#fff;"></i> 
+        Editar
+      </a>
+    </button>    
+  </div>
+</div>
+                    
+                        
+
+{% endblock %}
