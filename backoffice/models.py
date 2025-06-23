@@ -12,7 +12,6 @@ from django.db.models import Count
 from secrets import choice  
 from tkinter import CASCADE
 from django.dispatch import receiver
-from more_itertools import quantify
 from django.db.models import Sum
 from django.forms import ModelForm
 from django.contrib.auth.models import AbstractUser
